@@ -1,4 +1,4 @@
-import React, from 'react';
+import React from 'react';
 import x from '../style.module.css'
 
 import Autocomplete from "@material-ui/lab/Autocomplete";
