@@ -72,7 +72,7 @@ const Civilization = ({state, onCityAdd, onLevelUp, onSmileChange, onCogChange, 
                                     options={types}
                                     onChange={(e, value) => calculate(value)}
                                     getOptionLabel={(option) => option.title}
-                                    style={{width: '50%'}}
+                                    style={{width: '100%'}}
                                     renderInput={(params) => <TextField {...params} label="Type" variant="outlined"/>}
                                 /> : ''}
 

@@ -126,9 +126,9 @@
 .modal {
   position: relative;
   padding: 20px;
+  padding-top: 70px;
+  width: 100%;
   background: #fff;
-  height: 80%;
-  width: 80%;
   color: #62829e;
   border-radius: 10px;
   display: flex;
