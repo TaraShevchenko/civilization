@@ -22,6 +22,7 @@ const Civilization = ({state, onCityAdd, onLevelUp, onSmileChange, onCogChange, 
     }
 
     const calculate = (value) => {
+        setTotal(0)
         for (let city of state.cities) {
             const cityType = city.types.find(type => type.active === true);
             if (cityType) {
