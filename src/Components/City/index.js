@@ -28,7 +28,7 @@ const City = ({city, onLevelUp, onCogChange, onSmileChange, cityDelete, changeTy
                             value={activeType}
                             onChange={(e, value) => changeType(city.id, value)}
                             getOptionLabel={(option) => option.title}
-                            style={{width: '49%'}}
+                            style={{width: '100%'}}
                             renderInput={(params) => <TextField {...params} label="Type" variant="outlined"/>}
                         />
                     </div>
