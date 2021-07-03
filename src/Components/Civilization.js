@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from 'react';
-import {NavLink, Route} from "react-router-dom";
+import React, {useState} from 'react';
 
 import './style.css';
 import x from './style.module.css';
@@ -19,9 +18,7 @@ const Civilization = ({state, onCityAdd, onLevelUp, onSmileChange, onCogChange, 
 
     const changeModalOpen = () => {
         setOpened(true);
-        state.cities.length ? setTotal(0) : setTotal('Создайте хотя бы один город')
-
-
+        state.cities.length ? setTotal(0) : setTotal('Создайте хотя бы один город');
     }
 
     const calculate = (value) => {
@@ -45,11 +42,10 @@ const Civilization = ({state, onCityAdd, onLevelUp, onSmileChange, onCogChange, 
         {title: "Нефть"},
         {title: "Специи"},
         {title: "Уголь"},
-    ]
+    ];
 
     return (
         <div>
-            {/*<Route path='/civilization/'>*/}
             <div className={x.root}>
                 <div className='container'>
                     <div className='row'>
@@ -88,9 +84,6 @@ const Civilization = ({state, onCityAdd, onLevelUp, onSmileChange, onCogChange, 
                     </div>
                 </div>
             </div>
-
-
-            {/*</Route>*/}
         </div>
     );
 };
