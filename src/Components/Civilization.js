@@ -1,40 +1,96 @@
-import React from 'react';
-import {Route} from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {NavLink, Route} from "react-router-dom";
 
-import x from './style.module.css';
 import './style.css';
+import x from './style.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import NewCity from "./NewCity";
 import Modal from "./Modal";
 import City from "./City";
+import {TextField} from "@material-ui/core";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
 
-const Civilization = ({state, onCityAdd}) => {
+const Civilization = ({state, onCityAdd, onLevelUp, onSmileChange, onCogChange, cityDelete, changeType}) => {
 
-    const cityId = state.cities.length;
+    const [opened, setOpened] = useState(false);
+    const [total, setTotal] = useState(0);
+
+    const changeModalOpen = () => {
+        setOpened(true);
+        state.cities.length ? setTotal(0) : setTotal('Создайте хотя бы один город')
+
+
+    }
+
+    const calculate = (value) => {
+        for (let city of state.cities) {
+            const cityType = city.types.find(type => type.active === true);
+            if (cityType) {
+                const profit = cityType.title === value.title ? city.profit * 2 : city.profit;
+                setTotal(prevState => prevState + profit);
+            }else {
+                setTotal('Не все города имеют тип');
+            }
+        }
+    }
+
+    const types = [
+        {title: "Брильянты"},
+        {title: "Вино"},
+        {title: "Драгоценные металы"},
+        {title: "Лошади "},
+        {title: "Метал"},
+        {title: "Нефть"},
+        {title: "Специи"},
+        {title: "Уголь"},
+    ]
 
     return (
         <div>
+            {/*<Route path='/civilization/'>*/}
+            <div className={x.root}>
+                <div className='container'>
+                    <div className='row'>
 
-            <Route path='/civa/'>
-                <div className={x.root}>
-                    <div className='container'>
-                        <div className='row'>`
-                            {state.cities.map(city => <City key={city.id} city={city} />)}
+                        {state.cities ? state.cities.map(city =>
+                            <City
+                                key={city.id}
+                                city={city}
+                                onLevelUp={onLevelUp}
+                                onSmileChange={onSmileChange}
+                                onCogChange={onCogChange}
+                                cityDelete={cityDelete}
+                                changeType={changeType}
+                            />
+                        ) : ''}
+                        <NewCity onCityAdd={onCityAdd}/>
+                    </div>
+                    <div className={`${x.calculateWrapper}`}>
+                        <Modal opened={opened} setOpened={setOpened}>
+                            {state.cities[0] ?
+                                <Autocomplete
+                                    id={`calculate`}
+                                    options={types}
+                                    onChange={(e, value) => calculate(value)}
+                                    getOptionLabel={(option) => option.title}
+                                    style={{width: '50%'}}
+                                    renderInput={(params) => <TextField {...params} label="Type" variant="outlined"/>}
+                                /> : ''}
 
-                            <NewCity onCityAdd={onCityAdd} cityId={cityId}/>
-                        </div>
-                        <div className={`${x.calculateWrapper}`}>
-                            <button className={`btn btn-primary ${x.calculate}`}>Calculate</button>
-                        </div>
+                            <div className={x.total}>{total}</div>
+
+                        </Modal>
+                        <button className={`btn btn-primary ${x.calculate}`}
+                                onClick={changeModalOpen}>Calculate
+                        </button>
                     </div>
                 </div>
-            </Route>
+            </div>
 
-            <Route path='/civa/calculate'>
-                <Modal/>
-            </Route>
+
+            {/*</Route>*/}
         </div>
     );
 };

@@ -1,6 +1,12 @@
 import {connect} from "react-redux";
 import Civilization from "./Civilization";
-import {newCityActionCreator} from "../State/CityReducer";
+import {
+    newCityActionCreator,
+    levelUpActionCreator,
+    smileChangeActionCreator,
+    cogChangeActionCreator,
+    cityDeleteActionCreator, typeChangeActionCreator
+} from "../State/CityReducer";
 
 
 const mapStateToProps = (state) => ({
@@ -8,9 +14,24 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    onCityAdd: (id) => {
-        dispatch(newCityActionCreator(id));
-    }
+    onCityAdd: () => {
+        dispatch(newCityActionCreator());
+    },
+    onLevelUp: (id) => {
+        dispatch(levelUpActionCreator(id));
+    },
+    onSmileChange: (id) => {
+        dispatch(smileChangeActionCreator(id));
+    },
+    onCogChange: (id) => {
+        dispatch(cogChangeActionCreator(id));
+    },
+    cityDelete: (id) => {
+        dispatch(cityDeleteActionCreator(id));
+    },
+    changeType: (id, value) => {
+        dispatch(typeChangeActionCreator(id, value));
+    },
 })
 
 const ProfileContainer = connect(mapStateToProps, mapDispatchToProps)(Civilization);

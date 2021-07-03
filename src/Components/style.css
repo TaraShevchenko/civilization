@@ -1,3 +1,16 @@
+.MuiInputLabel-outlined.MuiInputLabel-shrink {
+    transform: translate(14px, -5px) scale(0.75) !important;
+    background: #fff;
+}
+
+.PrivateNotchedOutline-root-1 {
+    top: 0 !important;
+}
+
+.MuiAutocomplete-clearIndicatorDirty {
+    display: none !important;
+}
+
 #root .btn-primary {
     display: flex;
     align-items: center;
