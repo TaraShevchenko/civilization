@@ -49,7 +49,7 @@ const Civilization = ({state, onCityAdd, onLevelUp, onSmileChange, onCogChange, 
         }
         for (let item of allCityTypes) {
             const a = item;
-            if (result[a] != undefined)
+            if (result[a] !== undefined)
                 ++result[a];
             else
                 result[a] = 1;
@@ -64,6 +64,8 @@ const Civilization = ({state, onCityAdd, onLevelUp, onSmileChange, onCogChange, 
                     break;
                 case 5:
                     monopoly = monopoly + 80;
+                    break;
+                default:
                     break;
             }
         }
