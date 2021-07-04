@@ -21,29 +21,60 @@ const Civilization = ({state, onCityAdd, onLevelUp, onSmileChange, onCogChange, 
         state.cities.length ? setTotal(0) : setTotal('Создайте хотя бы один город');
     }
 
-    const calculate = (value) => {
-        setTotal(0)
-        for (let city of state.cities) {
-            const cityType = city.types.find(type => type.active === true);
-            if (cityType) {
-                const profit = cityType.title === value.title ? city.profit * 2 : city.profit;
-                setTotal(prevState => prevState + profit);
-            }else {
-                setTotal('Не все города имеют тип');
-            }
-        }
-    }
-
     const types = [
-        {title: "Брильянты"},
         {title: "Вино"},
+        {title: "Город"},
+        {title: "Драгоценности"},
         {title: "Драгоценные металы"},
+        {title: "Железо"},
         {title: "Лошади"},
-        {title: "Метал"},
         {title: "Нефть"},
         {title: "Специи"},
         {title: "Уголь"},
     ];
+
+    const filterTypes = types.filter(item => item.title != "Город");
+
+    const calculate = (value) => {
+        setTotal(0);
+        let monopoly = 0;
+        let profit = 0;
+
+        const allCityTypes = [];
+        const result = {};
+
+        for (let city of state.cities) {
+            const cityType = city.activeType;
+            allCityTypes.push(cityType.title);
+        }
+        for (let item of allCityTypes) {
+            const a = item;
+            if (result[a] != undefined)
+                ++result[a];
+            else
+                result[a] = 1;
+        }
+        for (let key in result) {
+            switch (result[key]) {
+                case 3:
+                    monopoly = monopoly + 20;
+                    break;
+                case 4:
+                    monopoly = monopoly + 40;
+                    break;
+                case 5:
+                    monopoly = monopoly + 80;
+                    break;
+            }
+        }
+        for (let city of state.cities) {
+            const criticalProfit = city.activeType.title === value.title ? city.profit * 2 : city.profit;
+            profit = profit + criticalProfit;
+        }
+
+        setTotal(monopoly + profit);
+    }
+
 
     return (
         <div>
@@ -55,6 +86,7 @@ const Civilization = ({state, onCityAdd, onLevelUp, onSmileChange, onCogChange, 
                             <City
                                 key={city.id}
                                 city={city}
+                                types={types}
                                 onLevelUp={onLevelUp}
                                 onSmileChange={onSmileChange}
                                 onCogChange={onCogChange}
@@ -66,15 +98,15 @@ const Civilization = ({state, onCityAdd, onLevelUp, onSmileChange, onCogChange, 
                     </div>
                     <div className={`${x.calculateWrapper}`}>
                         <Modal opened={opened} setOpened={setOpened}>
-                            {state.cities[0] ?
-                                <Autocomplete
-                                    id={`calculate`}
-                                    options={types}
-                                    onChange={(e, value) => calculate(value)}
-                                    getOptionLabel={(option) => option.title}
-                                    style={{width: '100%'}}
-                                    renderInput={(params) => <TextField {...params} label="Type" variant="outlined"/>}
-                                /> : ''}
+
+                            <Autocomplete
+                                id={`calculate`}
+                                options={filterTypes}
+                                onChange={(e, value) => calculate(value)}
+                                getOptionLabel={(option) => option.title}
+                                style={{width: '100%'}}
+                                renderInput={(params) => <TextField {...params} label="Type" variant="outlined"/>}
+                            />
 
                             <div className={x.total}>{total}</div>
 

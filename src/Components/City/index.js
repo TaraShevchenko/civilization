@@ -13,10 +13,7 @@ import trashSolid from '../assets/images/trash-solid.svg';
 import levelUp from '../assets/images/long-arrow-alt-up-solid.svg';
 
 
-const City = ({city, onLevelUp, onCogChange, onSmileChange, cityDelete, changeType}) => {
-
-    const activeType = city.types.find(type => type.active === true);
-
+const City = ({city, onLevelUp, onCogChange, onSmileChange, cityDelete, changeType, types}) => {
     return (
         <>
             <div className="col-md-4 col-sm-6 col-12">
@@ -24,8 +21,8 @@ const City = ({city, onLevelUp, onCogChange, onSmileChange, cityDelete, changeTy
                     <div className={x.city__top}>
                         <Autocomplete
                             id={`${city.id}`}
-                            options={city.types}
-                            value={activeType}
+                            options={types}
+                            value={city.activeType}
                             onChange={(e, value) => changeType(city.id, value)}
                             getOptionLabel={(option) => option.title}
                             style={{width: '100%'}}
@@ -56,10 +53,10 @@ const City = ({city, onLevelUp, onCogChange, onSmileChange, cityDelete, changeTy
                         <button className="btn btn-primary" onClick={() => onCogChange(city.id)}>
                             <img src={cogSolid} alt='cogSolid'/>
                         </button>
-                        <button className="btn btn-primary" onClick={() => onSmileChange(city.id)}>
+                        <button disabled={city.activeType.title === 'Драгоценности' || city.activeType.title === 'Вино'} className="btn btn-primary" onClick={() => onSmileChange(city.id)}>
                             <img src={smileSolid} alt='coinsSolid'/>
                         </button>
-                        <button disabled={city.level === 4 ? 'disabled' : ''} className="btn btn-primary"
+                        <button disabled={city.level === 4} className="btn btn-primary"
                                 onClick={() => onLevelUp(city.id)}>
                             <img src={levelUp} alt='longArrowAltUpSolid'/>
                         </button>
@@ -69,7 +66,6 @@ const City = ({city, onLevelUp, onCogChange, onSmileChange, cityDelete, changeTy
                     </div>
                 </div>
             </div>
-
         </>
     );
 };

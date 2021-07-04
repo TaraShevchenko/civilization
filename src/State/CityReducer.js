@@ -15,10 +15,15 @@ export const cityReducer = (state = {cities: locStore ? [...locStore] : []}, act
     let cityIndex;
     let city;
 
-    const changeProfit = (level, smile, cog) => {
-        const smileNumber = smile ? 2 : 0;
-        const cogNumber = cog ? 2 : 1;
-        return (level * 2 + smileNumber) * cogNumber;
+    const changeProfit = (level, smile, cog, type = '') => {
+        let smileNumber = smile ? 2 : 0;
+        let cogNumber = cog ? 2 : 1;
+        switch (type) {
+            case 'Город':
+                return (city.level - 1 + smileNumber) * cogNumber;
+            default:
+                return (level * 2 + smileNumber) * cogNumber;
+        }
     }
 
     if (action.id) {
@@ -29,76 +34,56 @@ export const cityReducer = (state = {cities: locStore ? [...locStore] : []}, act
     switch (action.type) {
         case NEW_CITY:
             copyState.cities = [...state.cities];
-
             copyState.cities.push({
                 id: (new Date()).getTime(),
                 name: 'Untiled',
-                types: [
-                    { title: "Метал", active: false },
-                    { title: "Драгоценные металы", active: false  },
-                    { title: "Брильянты", active: false },
-                    { title: "Вино", active: false },
-                    { title: "Лошади", active: false },
-                    { title: "Нефть", active: false },
-                    { title: "Специи", active: false },
-                    { title: "Уголь", active: false },
-                ],
+                activeType: {title: "Город"},
                 level: 1,
                 cog: false,
                 smile: false,
-                profit: 2
+                profit: 0
             });
-            localStorage.setItem('store', JSON.stringify(copyState.cities));
 
+            localStorage.setItem('store', JSON.stringify(copyState.cities));
             return copyState;
         case LEVEL_UP:
             copyState.cities[cityIndex] = {
                 ...city,
                 level: city.level + 1,
-                profit: changeProfit(city.level + 1, city.smile, city.cog)
+                profit: changeProfit(city.level + 1, city.smile, city.cog, city.activeType.title)
             }
-            localStorage.setItem('store', JSON.stringify(copyState.cities));
 
+            localStorage.setItem('store', JSON.stringify(copyState.cities));
             return copyState;
         case SMILE_CHANGE:
             copyState.cities[cityIndex] = {
                 ...city,
                 smile: !city.smile,
-                profit: changeProfit(city.level, !city.smile, city.cog)
+                profit: changeProfit(city.level, !city.smile, city.cog, city.activeType.title)
             }
-            localStorage.setItem('store', JSON.stringify(copyState.cities));
 
+            localStorage.setItem('store', JSON.stringify(copyState.cities));
             return copyState;
         case COG_CHANGE:
             copyState.cities[cityIndex] = {
                 ...city,
                 cog: !city.cog,
-                profit: changeProfit(city.level, city.smile, !city.cog)
+                profit: changeProfit(city.level, city.smile, !city.cog, city.activeType.title)
             }
-            localStorage.setItem('store', JSON.stringify(copyState.cities));
 
+            localStorage.setItem('store', JSON.stringify(copyState.cities));
             return copyState;
         case CITY_DELETE:
             copyState.cities.splice(cityIndex, 1);
-            localStorage.setItem('store', JSON.stringify(copyState.cities));
 
+            localStorage.setItem('store', JSON.stringify(copyState.cities));
             return copyState;
         case CHANGE_TYPE:
-            const activeType = city.types.findIndex(type => type.title === action.value.title);
-            const newTypes = city.types.splice(activeType, 1);
-            city.types.map(type => type.active = false);
-
-            console.log()
-
             copyState.cities[cityIndex] = {
                 ...city,
-                types: [
-                    ...city.types,
-                    {
-                        title: newTypes[0].title,
-                        active: true,
-                    },
-                ]
+                activeType: action.value,
+                smile: action.value.title === "Вино" || action.value.title === "Драгоценности",
+                profit: changeProfit(city.level, action.value.title === "Вино" || action.value.title === "Драгоценности", city.cog, action.value.title)
             }
 
             localStorage.setItem('store', JSON.stringify(copyState.cities));
