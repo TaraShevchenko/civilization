@@ -1,8 +1,7 @@
 import React from 'react';
 import x from '../style.module.css'
 
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import {TextField} from '@material-ui/core';
+import {Select, MenuItem} from "@material-ui/core";
 
 import Lv from '../assets/images/Lv.svg';
 import cityImage from '../assets/images/city.png';
@@ -13,21 +12,23 @@ import trashSolid from '../assets/images/trash-solid.svg';
 import levelUp from '../assets/images/long-arrow-alt-up-solid.svg';
 
 
+
+
 const City = ({city, onLevelUp, onCogChange, onSmileChange, cityDelete, changeType, types}) => {
+
     return (
         <>
             <div className="col-md-4 col-sm-6 col-12">
                 <div className={`${x.city}`}>
                     <div className={x.city__top}>
-                        <Autocomplete
+                        <Select
                             id={`${city.id}`}
-                            options={types}
                             value={city.activeType}
-                            onChange={(e, value) => changeType(city.id, value)}
-                            getOptionLabel={(option) => option.title}
-                            style={{width: '100%'}}
-                            renderInput={(params) => <TextField {...params} label="Type" variant="outlined"/>}
-                        />
+                            onChange={(e, value) => changeType(city.id, value.props.value)}
+                            style={{width: '50%'}}
+                        >
+                            {types.map( (type, index) => <MenuItem key={index} value={type}>{type}</MenuItem>)}
+                        </Select>
                     </div>
                     <div className={x.city__image}>
                         <img src={cityImage} alt='city'/>

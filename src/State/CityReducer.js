@@ -37,7 +37,7 @@ export const cityReducer = (state = {cities: locStore ? [...locStore] : []}, act
             copyState.cities.push({
                 id: (new Date()).getTime(),
                 name: 'Untiled',
-                activeType: {title: "Город"},
+                activeType: "Город",
                 level: 1,
                 cog: false,
                 smile: false,
@@ -50,7 +50,7 @@ export const cityReducer = (state = {cities: locStore ? [...locStore] : []}, act
             copyState.cities[cityIndex] = {
                 ...city,
                 level: city.level + 1,
-                profit: changeProfit(city.level + 1, city.smile, city.cog, city.activeType.title)
+                profit: changeProfit(city.level + 1, city.smile, city.cog, city.activeType)
             }
 
             localStorage.setItem('store', JSON.stringify(copyState.cities));
@@ -59,7 +59,7 @@ export const cityReducer = (state = {cities: locStore ? [...locStore] : []}, act
             copyState.cities[cityIndex] = {
                 ...city,
                 smile: !city.smile,
-                profit: changeProfit(city.level, !city.smile, city.cog, city.activeType.title)
+                profit: changeProfit(city.level, !city.smile, city.cog, city.activeType)
             }
 
             localStorage.setItem('store', JSON.stringify(copyState.cities));
@@ -68,7 +68,7 @@ export const cityReducer = (state = {cities: locStore ? [...locStore] : []}, act
             copyState.cities[cityIndex] = {
                 ...city,
                 cog: !city.cog,
-                profit: changeProfit(city.level, city.smile, !city.cog, city.activeType.title)
+                profit: changeProfit(city.level, city.smile, !city.cog, city.activeType)
             }
 
             localStorage.setItem('store', JSON.stringify(copyState.cities));
@@ -82,8 +82,8 @@ export const cityReducer = (state = {cities: locStore ? [...locStore] : []}, act
             copyState.cities[cityIndex] = {
                 ...city,
                 activeType: action.value,
-                smile: action.value.title === "Вино" || action.value.title === "Драгоценности",
-                profit: changeProfit(city.level, action.value.title === "Вино" || action.value.title === "Драгоценности", city.cog, action.value.title)
+                smile: action.value === "Вино" || action.value === "Драгоценности",
+                profit: changeProfit(city.level, action.value === "Вино" || action.value === "Драгоценности", city.cog, action.value)
             }
 
             localStorage.setItem('store', JSON.stringify(copyState.cities));

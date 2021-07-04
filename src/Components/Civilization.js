@@ -7,8 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import NewCity from "./NewCity";
 import Modal from "./Modal";
 import City from "./City";
-import {TextField} from "@material-ui/core";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import {MenuItem, Select} from "@material-ui/core";
 
 
 const Civilization = ({state, onCityAdd, onLevelUp, onSmileChange, onCogChange, cityDelete, changeType}) => {
@@ -22,18 +21,18 @@ const Civilization = ({state, onCityAdd, onLevelUp, onSmileChange, onCogChange, 
     }
 
     const types = [
-        {title: "Вино"},
-        {title: "Город"},
-        {title: "Драгоценности"},
-        {title: "Драгоценные металы"},
-        {title: "Железо"},
-        {title: "Лошади"},
-        {title: "Нефть"},
-        {title: "Специи"},
-        {title: "Уголь"},
+        "Вино",
+        "Город",
+        "Драгоценности",
+        "Драгоценные металы",
+        "Железо",
+        "Лошади",
+        "Нефть",
+        "Специи",
+        "Уголь",
     ];
 
-    const filterTypes = types.filter(item => item.title !== "Город");
+    const filterTypes = types.filter(item => item !== "Город");
 
     const calculate = (value) => {
         setTotal(0);
@@ -45,7 +44,7 @@ const Civilization = ({state, onCityAdd, onLevelUp, onSmileChange, onCogChange, 
 
         for (let city of state.cities) {
             const cityType = city.activeType;
-            allCityTypes.push(cityType.title);
+            allCityTypes.push(cityType);
         }
         for (let item of allCityTypes) {
             const a = item;
@@ -70,7 +69,7 @@ const Civilization = ({state, onCityAdd, onLevelUp, onSmileChange, onCogChange, 
             }
         }
         for (let city of state.cities) {
-            const criticalProfit = city.activeType.title === value.title ? city.profit * 2 : city.profit;
+            const criticalProfit = city.activeType === value ? city.profit * 2 : city.profit;
             profit = profit + criticalProfit;
         }
 
@@ -101,14 +100,14 @@ const Civilization = ({state, onCityAdd, onLevelUp, onSmileChange, onCogChange, 
                     <div className={`${x.calculateWrapper}`}>
                         <Modal opened={opened} setOpened={setOpened}>
 
-                            <Autocomplete
+
+                            <Select
                                 id={`calculate`}
-                                options={filterTypes}
-                                onChange={(e, value) => calculate(value)}
-                                getOptionLabel={(option) => option.title}
-                                style={{width: '100%'}}
-                                renderInput={(params) => <TextField {...params} label="Type" variant="outlined"/>}
-                            />
+                                onChange={(e, value) => calculate(value.props.value)}
+                                style={{width: '50%'}}
+                            >
+                                {filterTypes.map( (type, index) => <MenuItem key={index} value={type}>{type}</MenuItem>)}
+                            </Select>
 
                             <div className={x.total}>{total}</div>
 
