@@ -33,7 +33,7 @@ const Civilization = ({state, onCityAdd, onLevelUp, onSmileChange, onCogChange, 
         {title: "Уголь"},
     ];
 
-    const filterTypes = types.filter(item => item.title != "Город");
+    const filterTypes = types.filter(item => item.title !== "Город");
 
     const calculate = (value) => {
         setTotal(0);
