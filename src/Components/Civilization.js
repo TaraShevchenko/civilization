@@ -76,7 +76,6 @@ const Civilization = ({state, onCityAdd, onLevelUp, onSmileChange, onCogChange, 
         setTotal(monopoly + profit);
     }
 
-
     return (
         <div>
             <div className={x.root}>
